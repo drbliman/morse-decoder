@@ -38,50 +38,52 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-    let arr = expr.split('**********');
-    let arr1 = [];
-    let morse = [];
-    let morse1 = '';
-    for (let i=0; i<arr.length; i++) {
-        arr1[i] = arr[i].split('')
-    }
-    for (let i=0; i<arr1.length; i++) {
-        for (let j=0; j<arr1[i].length; j++) {
-            arr1[i][j] = Number(arr1[i][j]);
+    if (expr.indexOf('*') != -1) {
+        let arr = expr.split('**********');
+        let arr1 = [];
+        let morse = [];
+        let morse1 = '';
+        for (let i=0; i<arr.length; i++) {
+            arr1[i] = arr[i].split('')
         }
-    }
-    for (let i=0; i<arr1.length; i++) {
-        morse1 = '';
-        for (let j=0; j<arr1[i].length+1; j++) {
-            if (j % 2 == 0) {
-                if (arr1[i][j] == 1 && arr1[i][j+1] == 0) {
-                    morse1 += '.'
-                }
-                if (arr1[i][j] == 1 && arr1[i][j+1] == 1) {
-                    morse1 += '-'
-                }
-                if (j % 10 == 0 && arr1[i][0] == 0 && j != 0) {
-                    morse.push(morse1);
-                    morse1 = '';
-                }
-                if (arr1[i][0] != 0 ) {
-                    if (j == 8 || j == 18) {
+        for (let i=0; i<arr1.length; i++) {
+            for (let j=0; j<arr1[i].length; j++) {
+                arr1[i][j] = Number(arr1[i][j]);
+            }
+        }
+        for (let i=0; i<arr1.length; i++) {
+            morse1 = '';
+            for (let j=0; j<arr1[i].length+1; j++) {
+                if (j % 2 == 0) {
+                    if (arr1[i][j] == 1 && arr1[i][j+1] == 0) {
+                        morse1 += '.'
+                    }
+                    if (arr1[i][j] == 1 && arr1[i][j+1] == 1) {
+                        morse1 += '-'
+                    }
+                    if (j % 10 == 0 && arr1[i][0] == 0 && j != 0) {
                         morse.push(morse1);
-                        morse1 = ''
+                        morse1 = '';
+                    }
+                    if (arr1[i][0] != 0 ) {
+                        if (j == 8 || j == 18) {
+                            morse.push(morse1);
+                            morse1 = ''
+                        }
                     }
                 }
             }
+            if (i<arr1.length - 1) {
+                morse.push(' ');
+            }
         }
-        if (i<arr1.length - 1) {
-            morse.push(' ');
-        }
-    }
-    let word = '';
-    for (let i = 0; i<morse.length; i++) {
-        if (MORSE_TABLE[morse[i]] == undefined) {
-            word += ' '
-        } else {
-            word += MORSE_TABLE[morse[i]]
+        let word = '';
+        for (let i = 0; i<morse.length; i++) {
+            if (MORSE_TABLE[morse[i]] == undefined) {
+                word += ' '
+            } else {
+                word += MORSE_TABLE[morse[i]]
+            }
         }
     }
     return word
