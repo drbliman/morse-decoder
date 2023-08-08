@@ -85,8 +85,40 @@ function decode(expr) {
                 word += MORSE_TABLE[morse[i]]
             }
         }
+        return word
     }
-    return word
+    if (expr.indexOf('*') == -1) {
+        let arr = expr.split('');
+        let arr1 = [];
+        let morse = [];
+        let morse1 = '';
+        for (let i=0; i<arr.length; i++) {
+            arr[i] = Number(arr[i])
+        }
+        let size = 10;
+        for (let i = 0; i <Math.ceil(arr.length/size); i++){
+            arr1[i] = arr.slice((i*size), (i*size) + size);
+        }
+        for(let i=0; i<arr1.length; i++) {
+            for(let j=0; j<arr1[i].length; j++) {
+                if (j % 2 == 0) {
+                    if (arr1[i][j] == 1 && arr1[i][j + 1] == 0) {
+                        morse1 += '.'
+                    }
+                    if (arr1[i][j] == 1 && arr1[i][j + 1] == 1) {
+                        morse1 += '-'
+                    }
+                }
+            }
+            morse.push(morse1);
+            morse1 = '';
+        }
+        let word = '';
+        for (let i = 0; i<morse.length; i++) {
+            word += MORSE_TABLE[morse[i]]
+        }
+        return word
+    }
 }
 
 module.exports = {
